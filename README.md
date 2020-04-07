@@ -14,4 +14,5 @@ Toda la información/documentación esta en la [WIKI](https://github.com/Londiuh
 - Abre `LANZAR.bat` <label title="Si abres directamente el archivo .py en windows y ocurre un error la consola se cerrara de inmediato y no podras ver el error">(Windows)</label> si tienes otro OS abre directamente `bot.py`
 
 #Vídeo tutorial
+
 Si quieres ver como usar este bot y sus funciones mira [este vídeo](http://google.com "este vídeo")
