@@ -2,7 +2,7 @@
 
 [![Python Versions](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue)](https://www.python.org/downloads/release/python-382/) 
 
-Un simple HTTP lobby bot de Fortnite escrito en Python especializado en los modos de juego del Battle Royale.
+Un simple bot de sala para Fortnite escrito en Python especializado en los modos de juego del Battle Royale.
 
 Toda la información/documentación esta en la [WIKI](https://github.com/Londiuh/MDJ-bot/wiki "WIKI")
 
@@ -15,4 +15,4 @@ Toda la información/documentación esta en la [WIKI](https://github.com/Londiuh
 
 # Vídeo tutorial
 
-Si quieres ver como usar este bot y sus funciones mira [este vídeo](http://google.com "este vídeo")
+Si quieres ver como usar este bot y sus funciones mira [este vídeo](http://google.com)
