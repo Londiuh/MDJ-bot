@@ -1,0 +1,15 @@
+{
+    "correo": "",
+    "contrasena": "",
+	
+    "aceptaramigos": "True",
+    "unirseinvitaciones": "True",
+	"depurar": "False",
+    "Admins": [
+		"ElLondiuh",
+		"adminpersona2",
+		"adminpersona3",
+		"adminpersona4",
+		"adminpersona5"
+    ]
+}
