@@ -8,7 +8,7 @@ Toda la información/documentación esta en la [WIKI](https://github.com/Londiuh
 
 # Instalación
 - Python 3.x.x (Recomiendo 3.8.2) [DESCARGALO AQUÍ](https://www.python.org/downloads/release/python-380/ "Puedes descargarlo aquí")
-- Instalar todos los paquetes requeridos  
+- Instalar todos los paquetes/librerias requeridos  
 `py -3 -m pip install -r librerias.txt`
 - [Crear una nueva cuenta](https://epicgames.com/id/register "Crear una nueva cuenta de Epic Games") de Epic Games para el bot
 - Configura el bot en `ajustes.json` y introduce las credenciales de tu nueva cuenta
