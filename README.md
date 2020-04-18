@@ -12,8 +12,8 @@ Toda la información/documentación esta en la [WIKI](https://github.com/Londiuh
 `py -3 -m pip install -r librerias.txt`
 - [Crear una nueva cuenta](https://epicgames.com/id/register "Crear una nueva cuenta de Epic Games") de Epic Games para el bot
 - Configura el bot en `ajustes.json` y introduce las credenciales de tu nueva cuenta
-- Abre `LANZAR.bat` <abbr title="Si abres directamente el archivo .py en windows y ocurre un error la consola se cerrara de inmediato y no podras ver el error">(Windows)</abbr> si tienes otro OS abre directamente `bot.py`
+- Abre `LANZAR.bat` 
 
 # Vídeo tutorial
 
-Si quieres ver como usar este bot y sus funciones mira [este vídeo](http://google.com)
+Si quieres ver como usar este bot y sus funciones mira [este vídeo](https://youtu.be/Xr-kw9lT-b8)
