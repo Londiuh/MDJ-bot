@@ -30,11 +30,11 @@ try:
     init(autoreset=True)
     from colorama import Fore, Back, Style
 except ModuleNotFoundError:
-    print(Fore.BLACK + Back.RED + f'[ERROR CRITICO] ¿Has instalado todas las librerías? Es que eres tontísimo".')
+    print(color.RED + f'[ERROR CRITICO] ¿Has instalado todas las librerías? Es que eres tontísimo".')
     exit()
 
 auth = None
-vlocal = "1.0.0" #No deberias cambiar esta variable
+vlocal = "1.0.1" #No deberias cambiar esta variable
 vactual = requests.get("https://raw.githubusercontent.com/Londiuh/MDJ-bot/master/version.txt")  
 
 print(f'  ')
@@ -296,7 +296,7 @@ async def event_friend_message(message):
                 if (user.id in friends):
                     await client.remove_or_decline_friend(user.id)
                     await message.reply(f"He eliminado a {user.display_name} de la lista de amgios.")
-                    print(Fore.GREEN + f"[{getTiempesito()}] {client.user.display_name} removed {user.display_name} as a friend.")
+                    print(Fore.GREEN + f"[{getTiempesito()}] {client.user.display_name} ha quitado a {user.display_name} como amigo.")
                 else: 
                     await message.reply(f"No tengo agregado a {user.display_name}.")
                     print(Fore.BLACK + Back.RED + f"[{getTiempesito()}] [ERROR] {client.user.display_name} a intentado eliminar a {user.display_name} de la lista de amigos del bot, pero ese usuario no esta agregado.")
