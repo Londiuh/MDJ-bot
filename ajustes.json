@@ -1,15 +1,27 @@
 {
-    "correo": "",
-    "contrasena": "",
-	
-    "aceptaramigos": "True",
-    "unirseinvitaciones": "True",
-	"depurar": "False",
-    "Admins": [
-		"ElLondiuh",
-		"adminpersona2",
-		"adminpersona3",
-		"adminpersona4",
-		"adminpersona5"
-    ]
+  "correo": "",
+  "contrasena": "",
+  
+  "estado": "https://github.com/Londiuh/MDJ-bot",
+  "sala_privacidad": "PUBLICO",
+  "plataforma": "SWITCH",
+  "nivel_pase": "777",
+
+  "skin_id": "cid_npc_athena_commando_f_rebirthdefault_henchman",
+  "mochila_id": "bid_481_graffitifuture",
+  "emote_id": "eid_rocketrodeo",
+  "escudo": "otherbanner23",
+  "escudo_color": "defaultcolor12",
+
+  "prefijo": "/",
+  "aceptaramigos": true,
+  "unirseinvitaciones": true,
+	"depurar": false,
+  "Admins": [
+    "ElLondiuh",
+    "adminpersona2",
+    "adminpersona3",
+    "adminpersona4",
+    "adminpersona5"
+  ]
 }
