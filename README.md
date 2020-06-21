@@ -1,8 +1,7 @@
 ###### Aviso: Las versiones de MDJ-BOT ya no se encuentran en "releases" ahora debes clonar el repositorio
 # MDJ-bot
 
-[![Python Versions](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue)](https://www.python.org/downloads/release/python-382/)  
-[![Discord](https://i.ibb.co/7S2c8cD/widget.png)](https://discord.gg/pKnMpZa)  
+[![Python Versions](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue)](https://www.python.org/downloads/release/python-382/) [![Discord](https://img.shields.io/discord/700042047079317546.svg?logo=discord)](https://discord.gg/pKnMpZa)  
 
 Un simple bot de sala para Fortnite escrito en Python especializado en los modos de juego del Battle Royale.
 
