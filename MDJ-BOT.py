@@ -1,4 +1,6 @@
-class color: #Tabla de colores (aunque tambíen uso colorama)
+#!/usr/bin/env python3
+
+class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
    DARKCYAN = '\033[36m'
@@ -33,8 +35,9 @@ except ModuleNotFoundError:
     print(color.RED + f'[ERROR CRITICO] ¿Has instalado todas las librerías? Es que eres tontísimo".')
     exit()
 
+data = None
 auth = None
-vlocal = "1.2.0" #No deberias cambiar esta variable
+vlocal = "1.3.0" #No deberias cambiar esta variable
 vactual = requests.get("https://raw.githubusercontent.com/Londiuh/MDJ-bot/master/version.txt")  
 
 print(f'  ')
@@ -50,11 +53,13 @@ print(f'  ')
 def getTiempesito():
     tiempesito = datetime.datetime.now().strftime('%H:%M:%S')
     return tiempesito
+
 print(color.DARKCYAN + f"Versión: {vlocal}")
 time.sleep(0.5)
 print(Fore.MAGENTA + f"[{getTiempesito()}] Buscando actualizaciones...")
 time.sleep(0.5)
-vactualfix = vactual.text[:-1] #Muy cutre, lo se, yo soy cutre
+vactualfix = vactual.text[:-1]
+
 if vactualfix != vlocal:
     print(Fore.BLACK + Back.YELLOW + f"[{getTiempesito()}] [ADVERTENCIA] Nueva versión disponible: {vactualfix}")
     print(Fore.GREEN + f"[¿?] ¿Deseas ver la lista de cambios? " + color.CYAN + "Si | No")
@@ -69,7 +74,7 @@ def cargarAjustes():
     try:
         with open('ajustes.json') as f:
             print(color.YELLOW + f'[{getTiempesito()}] Cargando \'ajustes.json\'...')
-            time.sleep(5)
+            time.sleep(3)
             global data
             data = json.load(f)
             print(color.GREEN + f'[{getTiempesito()}] ¡Ajustes cargados con éxito!')
@@ -78,36 +83,23 @@ def cargarAjustes():
         exit()
 cargarAjustes()
 
-if data['depurar']:
-    print(color.YELLOW + f'[{getTiempesito()}] La depuración esta activada.')
-    logger = logging.getLogger('fortnitepy.xmpp')
-    logger.setLevel(level=logging.DEBUG)
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-    logger.addHandler(handler)
+if data["depurar"]:
+    print(color.YELLOW + f'[{getTiempesito()}] La depuración está activada.')
+    if data["depurar_respuestas"]:
+        logger = logging.getLogger('fortnitepy.xmpp')
+        logger.setLevel(level=logging.DEBUG)
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+        logger.addHandler(handler)
+        print(color.YELLOW + f'[{getTiempesito()}] La depuración de respuestas HTTP está activada.')
+
+if data["depurar_respuestas"] and not data["depurar"]:
+    print(Fore.BLACK + Back.YELLOW + f"[{getTiempesito()}] [ADVERTENCIA] \"depurar_respuestas\" esta activado pero \"depurar\" no")
 
 time.sleep(0.1)  
 print(color.BLUE + f'\n---------------------------------------------------------------------')
 listo = False
 
-def get_detalles_autentificacion():
-    if os.path.isfile('device_auths.json'):
-        with open('auths.json', 'r') as fp:
-            return json.load(fp)
-    else:
-        with open('auths.json', 'w+') as fp:
-            fp.write('{}')
-            
-    return {}
-
-def store_detalles_autentificacion(email, details):
-    existing = get_detalles_autentificacion()
-    existing[email] = details
-
-    with open('auths.json', 'w') as fp:
-        json.dump(existing, fp, sort_keys=False, indent=4)
-
-device_auth_details = get_detalles_autentificacion().get(data['correo'], {})
 if data['sala_privacidad'].lower() == "publico":
     privasidad = fortnitepy.PartyPrivacy.PUBLIC
 elif data['sala_privacidad'].lower() == "privado":
@@ -138,25 +130,41 @@ else:
     plataforma = fortnitepy.Platform.SWITCH
     print(Fore.BLACK + Back.YELLOW + f"[{getTiempesito()}] [ADVERTENCIA] {data['plataforma']} no es una plataforma válida.")
     print(Fore.BLACK + Back.YELLOW + f"[{getTiempesito()}] [ADVERTENCIA] Se ha puesto la plataforma en SWITCH")
-print(plataforma)
+
+#Autentificación
+def get_detalles_autentificacion():
+    if os.path.isfile('device_auths.json'):
+        with open('auths.json', 'r') as fp:
+            return json.load(fp)
+    else:
+        with open('auths.json', 'w+') as fp:
+            fp.write('{}')
+            
+    return {}
+
+def store_detalles_autentificacion(email, details):
+    existing = get_detalles_autentificacion()
+    existing[email] = details
+
+    with open('auths.json', 'w') as fp:
+        json.dump(existing, fp, sort_keys=False, indent=4)
+
+device_auth_details = get_detalles_autentificacion().get(data['correo'], {})
+
 client = fortnitepy.Client(
     auth=fortnitepy.AdvancedAuth(
         email=data['correo'],
         password=data['contrasena'],
-        prompt_exchange_code=True,
+        prompt_authorization_code=True,
         delete_existing_device_auths=True,
         **device_auth_details
     ),
     status=data['estado'],
-    platform=plataforma,
-    default_party_config={'privacy': privasidad},
-    default_party_member_config=[
-        functools.partial(fortnitepy.ClientPartyMember.set_outfit, asset=data['skin_id']),
-        functools.partial(fortnitepy.ClientPartyMember.set_backpack, data['mochila_id']),
-        functools.partial(fortnitepy.ClientPartyMember.set_banner, icon=data['escudo'], color=data['escudo_color'], season_level=data['nivel_pase']),
-    ]
+    platform=plataforma
+    #default_party_config={'privacy': privasidad}
 )
 
+#Eventos y comandos
 @client.event
 async def event_device_auth_generate(details: dict, email: str) -> None:
     store_detalles_autentificacion(email, details)
@@ -166,6 +174,12 @@ async def event_device_auth_generate(details: dict, email: str) -> None:
 async def event_ready():
     print(color.BLUE + f'[{getTiempesito()}] ¡El bot se incició exitosamente!')
     print(color.BLUE + f'\n---------------------------------------------------------------------') 
+    member = client.party.me
+    await member.edit_and_keep(
+        functools.partial(fortnitepy.ClientPartyMember.set_outfit, asset=data["skin_id"]),
+        functools.partial(fortnitepy.ClientPartyMember.set_backpack, asset=data["mochila_id"]),
+        functools.partial(fortnitepy.ClientPartyMember.set_banner, icon=data['escudo'], color=data['escudo_color'], season_level=data['nivel_pase'])
+    )
 
 @client.event
 async def event_party_invite(invite):
@@ -200,12 +214,12 @@ async def event_friend_request(request):
 @client.event
 async def event_party_member_join(member):
     eval(compile(base64.b64decode('Z2xvYmFsIGNyZDINCmNyZDIgPSBUcnVl'),'','exec'))
-    await client.user.party.send(base64.b64decode("RXN0ZSBib3QgaGEgc2lkbyBjcmVhZG8gcG9yIEVsTG9uZGl1aC4gUHVlZGVzIGVjb250cmFybG8gZW4gZWwgcmVwb3NpdGlvcmlvIG9maWNpYWw6IGh0dHBzOi8vZ2l0aHViLmNvbS9Mb25kaXVoL01ESi1ib3Q=".encode('ascii')).decode('ascii'))
+    await client.party.send(base64.b64decode("RXN0ZSBib3QgaGEgc2lkbyBjcmVhZG8gcG9yIEVsTG9uZGl1aC4gUHVlZGVzIGVjb250cmFybG8gZW4gZWwgcmVwb3NpdGlvcmlvIG9maWNpYWw6IGh0dHBzOi8vZ2l0aHViLmNvbS9Mb25kaXVoL01ESi1ib3Q=".encode('ascii')).decode('ascii'))
     eval(compile(base64.b64decode('aWYiY3JkMiJub3QgaW4gZ2xvYmFscygpOmV4aXQoKQ=='),'','exec'))
     if client.user.display_name != member.display_name:
         print(Fore.BLUE + f"[{getTiempesito()}] {member.display_name} se ha unido a la sala.")
     time.sleep(1)
-    await client.user.party.me.set_emote(asset=data['emote_id'])
+    await client.party.me.set_emote(asset=data['emote_id'])
 
 @client.event
 async def event_friend_message(message):
@@ -216,21 +230,39 @@ async def event_friend_message(message):
     print('[' + getTiempesito() + '] {0.author.display_name}: {0.content}'.format(message))
     pre = data['prefijo'] #Para acortar
     
+    #comandos
+    if pre + "aes" in args[0]:
+        if message.author.display_name in data['Admins'] and data["depurar"]:
+            try:
+                print(color.BLUE + requests.get("https://benbotfn.tk/api/v1/aes").text)
+            except:
+                await message.reply(f"Error: API caida o acceso denegado")
+                return
+        await message.reply("Comprueba la consola")
+
+    if "Playlist_" in args[0]:
+        if message.author.display_name in data['Admins'] and data["depurar"]:
+            try:
+                await client.party.set_playlist(playlist=args[0])
+            except:
+                await message.reply(f"No lider")
+                return
+
     if pre + "privacidad" in args[0].lower():
         if message.author.display_name in data['Admins']:
             if len(args) != 2:
                 await message.reply(f"Sintaxis del comando incorrecta")
                 return
             else:
-                if client.user.party.me.leader == True:
+                if client.party.me.leader == True:
                     if args[1].lower() == "publico":
-                        await client.user.party.set_privacy(fortnitepy.PartyPrivacy.PUBLIC)
+                        await client.party.me.set_privacy(fortnitepy.PartyPrivacy.PUBLIC)
                     elif args[1].lower() == "privado":
-                        await client.user.party.set_privacy(fortnitepy.PartyPrivacy.PRIVATE)
+                        await client.party.me.party.set_privacy(fortnitepy.PartyPrivacy.PRIVATE)
                     elif args[1].lower() == "amigos":
-                        await client.user.party.set_privacy(fortnitepy.PartyPrivacy.FRIENDS)
+                        await client.party.me.party.set_privacy(fortnitepy.PartyPrivacy.FRIENDS)
                     elif args[1].lower() == "amigosdeamigos":
-                        await client.user.party.set_privacy(fortnitepy.PartyPrivacy.FRIENDS_ALLOW_FRIENDS_OF_FRIENDS)
+                        await client.party.me.party.set_privacy(fortnitepy.PartyPrivacy.FRIENDS_ALLOW_FRIENDS_OF_FRIENDS)
                     else:
                         await message.reply("{args[1]} no es una privacidad de sala válida")
                         return
@@ -246,7 +278,7 @@ async def event_friend_message(message):
                 await message.reply(f"Sintaxis del comando incorrecta")
                 return
             else:
-                await client.user.party.me.set_outfit(asset=args[1])
+                await client.party.me.set_outfit(asset=args[1])
         else:
             await message.reply('¡No tienes acceso a este comando!')
 
@@ -256,7 +288,7 @@ async def event_friend_message(message):
                 await message.reply(f"Sintaxis del comando incorrecta")
                 return
             else:
-                await client.user.party.me.set_backpack(asset=args[1])
+                await client.party.me.set_backpack(asset=args[1])
         else:
             await message.reply('¡No tienes acceso a este comando!')
 
@@ -266,7 +298,7 @@ async def event_friend_message(message):
                 await message.reply(f"Sintaxis del comando incorrecta")
                 return
             else:
-                await client.user.party.me.set_emote(asset=args[1])
+                await client.party.me.set_emote(asset=args[1])
         else:
             await message.reply('¡No tienes acceso a este comando!')
 
@@ -315,10 +347,10 @@ async def event_friend_message(message):
 
     if pre + "abandonar" in args[0].lower():
         if message.author.display_name in data['Admins']:
-            await client.user.party.me.set_emote('EID_Snap')
+            await client.party.me.set_emote('EID_Snap')
             time.sleep(2)
             await message.reply('¡Me piro vampiro!')
-            await client.user.party.me.leave()
+            await client.party.me.leave()
             print(Fore.GREEN + f'[{getTiempesito()}] El bot ha abandonado la sala porque {message.author.display_name} lo ha pedido')
         else:
             if message.author.display_name not in data['Admins']:
@@ -327,7 +359,7 @@ async def event_friend_message(message):
 
     if pre + "expulsar" in args[0].lower() and message.author.display_name in data['Admins']:
         user = await client.fetch_profile(joinedArguments)
-        member = client.user.party.members.get(user.id)
+        member = client.party.members.get(user.id)
         if member is None:
             await message.reply("No hay ningún usuario en la sala llamado" + args[1])
         else:
@@ -413,24 +445,24 @@ async def event_friend_message(message):
             
 
     if pre + "playlist-info" in args[0]:
-        await message.reply("PlaylistName: " + (client.user.party.playlist_info[0]))
+        await message.reply("PlaylistName: " + (client.party.playlist_info[0]))
         if message.author.display_name in data['Admins']:
             await message.reply("Tienes más información sobre la playlist en la consola :)")
             print(color.CYAN + f"<-------------[Playlist-Información]------------->")
-            print(color.BLUE + f"PlaylistName: " + (client.user.party.playlist_info[0]))
-            print(color.BLUE + f"TournamentId: " + (client.user.party.playlist_info[1]))
-            print(color.BLUE + f"EventWindowId: " + (client.user.party.playlist_info[2]))
-            print(color.BLUE + f"RegionId: " + (client.user.party.playlist_info[3]))
+            print(color.BLUE + f"PlaylistName: " + (client.party.playlist_info[0]))
+            print(color.BLUE + f"TournamentId: " + (client.party.playlist_info[1]))
+            print(color.BLUE + f"EventWindowId: " + (client.party.playlist_info[2]))
+            print(color.BLUE + f"RegionId: " + (client.party.playlist_info[3]))
             print(color.CYAN + f"<-------------[Playlist-Información]------------->")
         
 
     if pre + "lider" in args[0].lower() and message.author.display_name in data['Admins']:
         if len(args) != 1:
             user = await client.fetch_profile(joinedArguments)
-            member = client.user.party.members.get(user.id)
+            member = client.party.members.get(user.id)
         if len(args) == 1:
             user = await client.fetch_profile(message.author.display_name)
-            member = client.user.party.members.get(user.id)
+            member = client.party.members.get(user.id)
         if member is None:
             await message.reply("Ese usuario no esta en la sala ¿Escribiste bien el nombre?")
         else:
@@ -453,47 +485,29 @@ async def event_friend_message(message):
                 return
 
             if "Playlist_" in args[1]:
-                await client.user.party.me.set_ready(fortnitepy.ReadyState.NOT_READY)
+                await client.party.me.set_ready(fortnitepy.ReadyState.NOT_READY)
                 try:
-                    await client.user.party.set_playlist(playlist="Playlist_PlaygroundV2")
+                    await client.party.set_playlist(playlist="Playlist_PlaygroundV2")
                 except:
                     await message.reply(f"¡No puedes usar este comando si no soy líder!")
                     return
+                await message.reply(f"¿Que clave de emparejemiento quieres que ponga? Responde \"no\" si no quieres clave o ya has puesto una")
                 user = await client.fetch_profile(message.author.display_name)
-                member = client.user.party.members.get(user.id)
-                if member.is_ready():
-                    await message.reply(f"¿Estan todos los demás jugadores de la sala en listo? Si o no")
-                    res = await client.wait_for('friend_message')
-                    content = res.content.lower()
-                    if content == "si".lower():
-                        await message.reply(f"¿Que clave de emparejemiento quieres que ponga? Responde \"no\" si no quieres clave o ya has puesto una")
-                        res = await client.wait_for('friend_message')
-                        content = res.content.lower()
-                        if content != "no".lower():
-                            await member.party.set_custom_key(content)
-                            await message.reply(f"Clave puesta con exito.")
-                        time.sleep(3)
-                        await message.reply(f"Cambiando el modo de juego...")
-                        time.sleep(3)
-                        try:
-                            await client.user.party.set_playlist(playlist=args[1])
-                            time.sleep(1.3)
-                            await client.user.party.me.set_ready(fortnitepy.ReadyState.SITTING_OUT)
-                            time.sleep(7)
-                            await message.reply(f"Si se ha quedado 'Esperando emparejamiento' usa \"{pre}modo reintentar\"")
-                        except Exception as e:
-                            pass
-                            await message.reply(f"¡No puedo cambiar el modo si no soy líder!")
-                            print(Fore.BLACK + Back.YELLOW + f"[{getTiempesito()}] [ADVERTENCIA] No se ha podido cambiar el modo porque el bot no es líder.")
-                    else:
-                        await message.reply(f"¡Todos los jugadores deben estar en listo!")
-                else:
-                    await message.reply(f"¡Todos los jugadores deben estar en listo!")
-            elif "reintentar" in args[1]:
-                await message.reply("Reintentando...")
-                await client.user.party.me.set_ready(fortnitepy.ReadyState.NOT_READY)
+                member = client.party.members.get(user.id)
+                res = await client.wait_for('friend_message')
+                content = res.content.lower()
+                if content != "no".lower():
+                    await member.party.set_custom_key(content)
+                    await message.reply(f"Clave puesta con exito.")
+                await message.reply(f"Cambiando el modo de juego...")
                 time.sleep(0.5)
-                await client.user.party.me.set_ready(fortnitepy.ReadyState.SITTING_OUT)
+                try:
+                    await client.party.set_playlist(playlist=args[1], tournament="epicgames_Arena_S13_Trios", event_window="Arena_S13_Division1_Trios")
+                    await client.party.me.leave()
+                except:
+                    pass
+                    await message.reply(f"¡No puedo cambiar el modo si no soy líder!")
+                    print(Fore.BLACK + Back.YELLOW + f"[{getTiempesito()}] [ADVERTENCIA] No se ha podido cambiar el modo porque el bot no es líder.")
 
             elif "gilipollas" in args[1].lower():
                 await message.reply(f"Activando modo gilipollas...")
@@ -530,4 +544,3 @@ try:
         print(Fore.BLACK + Back.RED + f"[{getTiempesito()}] [ERROR] Error de autenticación desconocido. Si este error sigue ocurriendo reportalo")
 except fortnitepy.AuthException as e:
     print(Fore.BLACK + Back.RED + f"[{getTiempesito()}] [ERROR] Error de autenticación ¿Pusiste el correo y la contraseña bien? ¿Pusiste el exchange code bien?")
-#Si robas codigo estas cometiendo un acto ilegal. El codigo esta visible para que aprendas
