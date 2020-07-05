@@ -1,28 +1,38 @@
 {
-  "correo": "",
-  "contrasena": "",
+    "correo": "",
+    "contraseña": "",
 
-  "estado": "https://github.com/Londiuh/MDJ-bot",
-  "sala_privacidad": "PUBLICO",
-  "plataforma": "SWITCH",
-  "nivel_pase": "777",
+    "estado": "https://github.com/Londiuh/MDJ-bot",
+    "plataforma": "SWITCH",
+    "nivel_pase": "777",
 
-  "skin_id": "cid_772_athena_commando_m_sandcastle",
-  "mochila_id": "bid_481_graffitifuture",
-  "emote_id": "eid_rocketrodeo",
-  "escudo": "otherbanner23",
-  "escudo_color": "defaultcolor12",
+    "skin_id": "cid_772_athena_commando_m_sandcastle",
+    "mochila_id": "bid_557_sharksuitfemale",
+    "emote": true,
+    "emote_id": "eid_professorpup",
+    "emote_duración": 4,
+    "emote_abandonar": true,
+    "emote_abandonar_id": "eid_fireworks_wkx2w",
+    "escudo": "otherbanner23",
+    "escudo_color": "defaultcolor12",
+    "kairos_avatar_id": "cid_013_0cca9ee4187798c6de32e0a6d079d433d4abf2bbcf19d38d91303c6253cb7099",
+    "kairos_avatar_fondo": ["#ff0000", "#00ff00", "#0000ff"],
 
-  "prefijo": "/",
-  "aceptaramigos": true,
-  "unirseinvitaciones": true,
-  "depurar": false,
-  "depurar_respuestas": false,
-  "Admins": [
-    "ElLondiuh",
-    "adminpersona2",
-    "adminpersona3",
-    "adminpersona4",
-    "adminpersona5"
-  ]
+    "prefijo": "/",
+    "msg_abandonar": "Adiós :)",
+    "aceptaramigos": true,
+    "unirseinvitaciones": true,
+    "activar_apagar": true,
+
+    "depurar": false,
+    "depurar_respuestas": false,
+
+    "todos_admins": false,
+    "admins": [
+        "ElLondiuh",
+        "adminpersona2",
+        "adminpersona3",
+        "adminpersona4",
+        "adminpersona5"
+    ]
 }
