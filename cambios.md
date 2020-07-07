@@ -1,6 +1,11 @@
 ###### Aviso: Las versiones de MDJ-BOT ya no se encuentran en "releases" ahora debes clonar el repositorio
 [Clonar repositiorio](https://github.com/Londiuh/MDJ-bot/archive/master.zip)
 
+## v1.5.0 - 07/07/2020
+- Ahora con el comando `Playlist_` pudes cambiar `tournamentID` y `eventWindowID`
+- Ahora el fondo del avatar (kairos) es un degradado morado, por defecto
+- Ahora `/playlist-info` muestra todas las IDs del modo en el chat
+
 ## v1.4.0 - 05/07/2020
 - Errores arreglados
 - Optimizaciones

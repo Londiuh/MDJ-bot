@@ -16,7 +16,7 @@
     "escudo": "otherbanner23",
     "escudo_color": "defaultcolor12",
     "kairos_avatar_id": "cid_013_0cca9ee4187798c6de32e0a6d079d433d4abf2bbcf19d38d91303c6253cb7099",
-    "kairos_avatar_fondo": ["#ff0000", "#00ff00", "#0000ff"],
+    "kairos_avatar_fondo": ["#B35EEF","#4D1397","#2E0A5D"],
 
     "prefijo": "/",
     "msg_abandonar": "Adiós :)",

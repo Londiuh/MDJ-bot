@@ -248,9 +248,25 @@ async def event_friend_message(message):
     pre = config["prefijo"]
     
     # TODO: nuevo sistema comandos (fortnitepy.ext.commands)
+    #Tener que reescribir todo el sitema de comandos me da mucha pereza
     # TODO: comandos no admin, piedra papel tijera...
     # TODO: /skin, /mochila, /emote... para gente que no sabe las IDs
+    # TODO: poder configurar que comandos son admin
     if message.author.display_name in config["admins"] or config["todos_admins"]:
+        '''
+        if pre + "region" in args[0]:
+            if len(args) == 2:
+                await client.party.set_playlist(region=args[1])
+
+        elif pre + "userid" in args[0]:
+            usuario = await client.fetch_profile(joinedArguments)
+            miembro = client.party.members.get(usuario.id)
+            if miembro == None:
+                await message.reply("Error: Ese usuario no existe o no esta en tu sala")
+            else:
+                await message.reply(f"ID: {miembro}")
+                print(miembro)
+        '''
         if pre + "nolisto" in args[0] or pre + "participar" in args[0]:
             await client.party.me.set_ready(fortnitepy.ReadyState.NOT_READY)
             await message.reply("Estado de sala cambiado a: no listo")
@@ -291,7 +307,10 @@ async def event_friend_message(message):
         elif "Playlist_" in args[0]:
             if config["depurar"]:
                 try:
-                    await client.party.set_playlist(playlist=args[0])
+                    if len(args) == 1:
+                        await client.party.set_playlist(playlist=args[0])
+                    elif len(args) == 3:
+                        await client.party.set_playlist(playlist=args[0], tournament=args[1], event_window=args[2])
                 except:
                     await message.reply(f"No lider")
                     return
@@ -471,14 +490,14 @@ async def event_friend_message(message):
             await message.reply("Comprueba la consola para ver la lista de amigos")       
 
         elif pre + "playlist-info" in args[0]:
-            await message.reply("PlaylistName: " + (client.party.playlist_info[0]))
-            await message.reply("Tienes más información sobre la playlist en la consola :)")
-            print(color.CYAN + f"<-------------[Playlist-Información]------------->")
-            print(color.BLUE + f"PlaylistName: " + (client.party.playlist_info[0]))
-            print(color.BLUE + f"TournamentId: " + (client.party.playlist_info[1]))
-            print(color.BLUE + f"EventWindowId: " + (client.party.playlist_info[2]))
-            print(color.BLUE + f"RegionId: " + (client.party.playlist_info[3]))
-            print(color.CYAN + f"<-------------[Playlist-Información]------------->")
+            await message.reply(f"PlaylistName: {client.party.playlist_info[0]}")
+            await message.reply(f"TournamentId: {client.party.playlist_info[1]}")
+            await message.reply(f"EventWindowId: {client.party.playlist_info[2]}")
+            await message.reply(f"RegionId: {client.party.playlist_info[3]}")
+            print(color.BLUE + f"PlaylistName: {client.party.playlist_info[0]}")
+            print(color.BLUE + f"TournamentId: {client.party.playlist_info[1]}")
+            print(color.BLUE + f"EventWindowId: {client.party.playlist_info[2]}")
+            print(color.BLUE + f"RegionId: {client.party.playlist_info[3]}")
 
         elif pre + "lider" in args[0].lower():
             if len(args) != 1:
