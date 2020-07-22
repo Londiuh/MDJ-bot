@@ -1,6 +1,12 @@
 ###### Aviso: Las versiones de MDJ-BOT ya no se encuentran en "releases" ahora debes clonar el repositorio
 [Clonar repositiorio](https://github.com/Londiuh/MDJ-bot/archive/master.zip)
 
+## 1.5.1 - 22/07/2020
+- Proteción anti-niños rata que cambian los creditos eliminada
+- Ahora puedes cambiar el mensaje que envia el bot al unirse con la opción `msg_unirse`
+- Ahora la skin por defecto es la chica galaxy
+- AHora el emote por defecto es `EID_secrethandshake`
+
 ## v1.5.0 - 07/07/2020
 - Ahora con el comando `Playlist_` pudes cambiar `tournamentID` y `eventWindowID`
 - Ahora el fondo del avatar (kairos) es un degradado morado, por defecto

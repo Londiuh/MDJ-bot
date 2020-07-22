@@ -12,12 +12,9 @@ class color:
 try:
     import fortnitepy
     from fortnitepy.errors import *
-    import asyncio
     import time
     import datetime
     import json
-    import aiohttp
-    import base64
     import time
     import logging
     import functools
@@ -33,22 +30,19 @@ except ModuleNotFoundError as e:
     exit()
 
 config = None
-auth = None
 vlocal = json.load(open("version.json"))
 
-print(f'  ')
 print(color.RED + f'\t\t\t███╗   ███╗██████╗      ██╗      ██████╗  █████╗ ████████╗')
 print(color.RED + f'\t\t\t████╗ ████║██╔══██╗     ██║      ██╔══██╗██╔══██╗╚══██╔══╝')
 print(color.RED + f'\t\t\t██╔████╔██║██║  ██║     ██║█████╗██████╦╝██║  ██║   ██║   ')
 print(color.RED + f'\t\t\t██║╚██╔╝██║██║  ██║██╗  ██║╚════╝██╔══██╗██║  ██║   ██║   ')
 print(color.RED + f'\t\t\t██║ ╚═╝ ██║██████╔╝╚█████╔╝      ██████╦╝╚█████╔╝   ██║   ')
 print(color.RED + f'\t\t\t╚═╝     ╚═╝╚═════╝  ╚════╝       ╚═════╝  ╚════╝    ╚═╝   ')
-eval(compile(base64.b64decode('Y3JkMT1UcnVlDQpwcmludChjb2xvci5EQVJLQ1lBTitmIiBcdFx0XHRcdCIrYmFzZTY0LmI2NGRlY29kZSgiVlc1aElHTnZjMkVnYUdWamFHRWdjRzl5SUVWc1RHOXVaR2wxYUE9PSIuZW5jb2RlKCdhc2NpaScpKS5kZWNvZGUoJ2FzY2lpJykp'),'','exec'))
-print(f'  ') 
+print(color.DARKCYAN+f" \t\t\t\tUna cosa hecha por ElLondiuh\n")
 print(color.DARKCYAN + f"Versión: {vlocal['major']}.{vlocal['minor']}.{vlocal['patch']}")
 
 #Funciones y mierdas
-def es_numero(str_num: str, convertir: bool) -> bool:
+def es_numero(str_num: str, convertir: bool):
     try:
         num = float(str_num)
         if convertir:
@@ -73,7 +67,7 @@ except Exception as e:
     pError(f"No dispones de acceso a internet ({e})")
     exit()
 
-def buscarUpdate() -> bool:
+def buscarUpdate():
     print(Fore.MAGENTA + f"[{getTiempesito()}] Buscando actualizaciones...")
     veRepo = json.loads(requests.get("https://raw.githubusercontent.com/Londiuh/MDJ-bot/master/version.json").text)
     if veRepo["major"] > vlocal["major"] or veRepo["minor"] > vlocal["minor"] or veRepo["patch"] > vlocal["patch"]:
@@ -212,7 +206,6 @@ async def event_party_invite(invite):
             print(Fore.BLACK + Back.YELLOW + f'[{getTiempesito()}] Se ha rechazado una invitación de sala de {invite.sender.display_name} (Motivo: unirseinvitaciones esta desactivado y no es admin)')
             await invite.sender.send(f"Este bot no puede aceptar tu invitación de partida ahora mismo porque no eres admin.")
             await invite.sender.send(f"Si conoces a la persona que esta controlando a este bot puedes pedirle que active la habilidad de aceptar invitaciones o te haga admin.")
-            await invite.sender.send(base64.b64decode("VGFtYmnDqW4gcHVlZGVzIGNvbnNlZ3VpciB0dSBwcm9waW8gYm90IGVuOiBodHRwczovL2dpdGh1Yi5jb20vTG9uZGl1aC9NREotYm90".encode('ascii')).decode('ascii'))
 
 @client.event
 async def event_friend_request(request):
@@ -228,9 +221,7 @@ async def event_friend_request(request):
 
 @client.event
 async def event_party_member_join(member):
-    eval(compile(base64.b64decode('Z2xvYmFsIGNyZDINCmNyZDIgPSBUcnVl'),'','exec'))
-    await client.party.send(base64.b64decode("RXN0ZSBib3QgaGEgc2lkbyBjcmVhZG8gcG9yIEVsTG9uZGl1aC4gUHVlZGVzIGVjb250cmFybG8gZW4gZWwgcmVwb3NpdGlvcmlvIG9maWNpYWw6IGh0dHBzOi8vZ2l0aHViLmNvbS9Mb25kaXVoL01ESi1ib3Q=".encode('ascii')).decode('ascii'))
-    eval(compile(base64.b64decode('aWYiY3JkMiJub3QgaW4gZ2xvYmFscygpOmV4aXQoKQ=='),'','exec'))
+    await client.party.send(config["msg_unirse"])
     if client.user.display_name != member.display_name:
         print(Fore.BLUE + f"[{getTiempesito()}] {member.display_name} se ha unido a la sala.")
     # TODO: emojis
@@ -240,7 +231,6 @@ async def event_party_member_join(member):
 
 @client.event
 async def event_friend_message(message):
-    eval(compile(base64.b64decode('aWYiY3JkMiJub3QgaW4gZ2xvYmFscygpOmV4aXQoKQ=='),'','exec'))
     args = message.content.split()
     split = args[1:]
     joinedArguments = " ".join(split)
@@ -556,9 +546,6 @@ async def event_friend_message(message):
                 await message.reply(f"Sintaxis del comando incorrecta")  
 
 try:
-    subnormaldemierda = 'aWYgImNyZDEiIG5vdCBpbiBnbG9iYWxzKCk6DQogICAgcHJpbnQoRm9yZS5SRUQgKyBmIltFUlJPUl0gRXN0ZSBib3QgaGEgc2lkbyBwcm9ncmFtYWRvIHBvciBFbExvbmRpdWguIFkgdW4gc3Vibm9ybWFsIGhhIFFVSVRBRE8vQ0FNQklBRE8gbG9zIENSRURJVE9TIikNCiAgICBwcmludChGb3JlLllFTExPVyArIGYiW0FEVkVSVEVOQ0lBXSBTaSBoYXMgc2lkbyB0dSBxdWllbiBoYSBxdWl0YWRvIGxvcyBjcmVkaXRvcywgcG9yIGZhdm9yLCB2dWVsdmVsb3MgYSBwb25lciIpDQogICAgcHJpbnQoRm9yZS5SRUQgKyBmIltFUlJPUl0gTm8gcHVlZGVzIHF1aXRhcm1lIGxvcyBjcmVkaXRvcy9yb2Jhcm1lIGNvZGlnby4gTm8gdGllbmVzIHBlcm1pc28gcGFyYSBtb2RpZmljaWNhciBlbCBjb2RpZ28iKQ0KY2xpZW50LnJ1bigpDQphdXRoID0gVHJ1ZQ=='
-    eval(compile(base64.b64decode(subnormaldemierda),'','exec'))
-    if auth == False:
-        pError("Error de autenticación desconocido")
+    client.run()
 except fortnitepy.AuthException as e:
     pError("Error de autenticación ¿Los datos proporcionados son correctos?")
